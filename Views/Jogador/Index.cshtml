@@ -1,0 +1,85 @@
+@model Jogador
+
+@{
+    ViewData["Title"] = "Jogador";
+}
+
+
+<link rel="stylesheet" href="~/css/jogadores.css">
+
+@if (ViewBag.UserName == null)
+{
+    <a class="navbar-brand" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+}
+else
+{
+   <!-- MAIN -->
+    <main>
+
+        <section class="container-grid cadastro-equipes">
+            
+            
+            <form class="frm-cad-equipe" method="post" action="@Url.Action("Cadastrar")">
+                <div class="cadequipe-titulo">
+                    <h1>Cadastro de Jogadores</h1>
+                    <hr>
+                </div>
+@* 
+                <input class="campo-entrada" type="number" id="id-equipe" placeholder="Digite o Id da sua equipe:">
+                <input class="campo-entrada" type="text" id="nome-equipe" placeholder="Digite o nome da sua equipe:"> *@
+                
+                <input class="campo-entrada" name="Nome" type="text" id="nome-jogador" placeholder="Digite o nome do Jogador:">
+                <input class="campo-entrada" name="Email" type="email" id="email-jogador" placeholder="Digite o Email do Jogador:">
+                <input class="campo-entrada" name="Senha" type="password" id="senha" placeholder="Digite a Senha:">
+
+                <select name="IdEquipe" class="campo-entrada" id="equipe-select">
+                    <option value="">Selecione uma Equipe</option>
+                      @foreach (Equipe equipe in ViewBag.Equipe){
+                        <option value="@equipe.IdEquipe">
+                            @equipe.Nome
+                        </option>
+                      }
+                    
+                </select>
+
+                <button type="submit">Cadastrar</button>
+                
+            </form>
+
+            <!-- TABELA CADASTRO DE EQUIPES -->
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Equipe</th>                    
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   @foreach (Jogador jogador in ViewBag.Jogador)
+            {
+                <tr>
+                    <td>@jogador.IdJogador</td>
+                    <td>@jogador.Nome</td>
+                    <td>@jogador.Email</td>
+                    <td>
+                        <img src="/img/Equipes/@jogador.Equipe.Imagem" alt="Imagem da equipe @jogador.Equipe.Nome" width="50px">
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Jogador" asp-action="Excluir" asp-route-id="@jogador.IdJogador">
+                            <img class="yellow-trash" src="~/assets/trash.png" alt="">
+                        </a>
+                    </td>
+                       <td>
+                        <a asp-area="" asp-controller="Jogador" asp-action="Editar" asp-route-id="@jogador.IdJogador">Editar</a>
+                       </td> 
+                </tr>
+            }
+                </tbody>
+            </table>
+        </section>
+    </main>
+}
